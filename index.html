@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Quiz</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app" id="app">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">🌙</button>
+
+        <!-- Screen 1: Login/Signup -->
+        <section id="auth-screen" class="screen">
+            <div class="auth-container">
+                <h1 class="auth-title">Data Science Quiz</h1>
+
+                <!-- Tab switches -->
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="login-tab">Login</button>
+                    <button class="auth-tab" id="signup-tab">Sign Up</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkmark"></span>
+                            Remember Me
+                        </label>
+                        <button type="button" class="link-btn" id="forgot-password">Forgot Password?</button>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <p id="login-error" class="error-message"></p>
+                    <p>
+                        Don't have an account? <button type="button" class="auth-switch-btn" id="show-signup">Sign
+                            Up</button>
+                    </p>
+                </form>
+
+                <!-- Sign Up Form (hidden by default)-->
+                <form id="signup-form" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <p id="signup-error" class="error-message"></p>
+                    <p>
+                        Already have an account? <button type="button" class="auth-switch-btn"
+                            id="show-login">Login</button>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Screen 1.5: Category Selection -->
+        <section id="category-screen" class="screen hidden">
+            <header class="quiz-header">
+                <div class="quiz-info">
+                    <span class="user-name" id="cat-user-display">Welcome, User</span>
+                    <button class="btn-small" id="cat-logout-btn">Logout</button>
+                </div>
+                <h1>Select a Topic</h1>
+            </header>
+
+            <main class="category-grid" id="category-container">
+                <!-- Categories injected by JS -->
+            </main>
+        </section>
+
+        <!-- Screen 2: Quiz -->
+        <section id="quiz-screen" class="screen hidden">
+            <header class="quiz-header">
+                <div class="quiz-info">
+                    <span class="user-name" id="user-display">Welcome, User</span>
+                    <button class="btn-small" id="logout-btn">Logout</button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                    <span class="progress-text" id="progress-text">1/50</span>
+                </div>
+
+                <!-- Timer -->
+                <div class="timer-container">
+                    <div class="timer-circle" id="timer-circle">
+                        <span class="timer-text" id="timer-text">60s</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="quiz-content">
+                <!-- Question -->
+                <h2 class="question-text" id="question-text">Question text</h2>
+
+                <div class="options-container" id="options-container">
+                </div>
+            </main>
+
+            <footer class="quiz-footer">
+                <button class="btn btn-secondary" id="prev-btn" disabled>Previous</button>
+                <button class="btn btn-primary" id="next-btn">Next</button>
+                <button class="btn btn-success" id="submit-btn">Submit Quiz</button>
+            </footer>
+        </section>
+
+        <!-- Screen 3: Results -->
+        <section id="results-screen" class="screen hidden">
+            <header class="results-header">
+                <h1>Quiz Complete!</h1>
+                <div class="score-display">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="final-score">0</span>
+                    <span class="score-max">/ 100</span>
+                </div>
+            </header>
+
+            <main class="results-content">
+                <!-- Charts Section -->
+                <div class="charts-container">
+                    <div class="chart-wrapper">
+                        <h3>Correct vs Incorrect</h3>
+                        <canvas id="pie-chart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h3>Time per Question</h3>
+                        <canvas id="bar-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Answer Review -->
+                <div class="review-container" id="review-container">
+                    <h3>Review Your Answers</h3>
+                    <!-- Generated by JavaScript -->
+                </div>
+
+                <!-- Leaderboard (if multiplayer) -->
+                <div class="leaderboard-container" id="leaderboard">
+                    <h3>Leaderboard</h3>
+                    <ol class="leaderboard-list" id="leaderboard-list">
+                        <!-- Generated by JavaScript -->
+                    </ol>
+                </div>
+            </main>
+
+            <footer class="results-footer">
+                <button class="btn btn-primary" id="retry-btn">Try Again</button>
+                <button class="btn btn-secondary" id="home-btn">Back to Home</button>
+            </footer>
+        </section>
+
+    </div>
+
+    <script src="./javascript/questions.js"></script>
+    <script src="./javascript/theme.js"></script>
+    <script src="./javascript/auth.js"></script>
+    <script src="./javascript/timer.js"></script>
+    <script src="./javascript/charts.js"></script>
+    <script src="./javascript/app.js"></script>
+</body>
+
+</html>
